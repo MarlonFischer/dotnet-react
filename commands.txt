@@ -1,0 +1,25 @@
+  238  12:14 > mkdir Reactivities
+  239  12:14 > cd Reactivities/
+  243  12:16 > dotnet new sln
+  245  12:18 > dotnet new classlib -n Domain
+  256  12:19 > dotnet new classlib -n Application
+  257  12:19 > dotnet new classlib -n Persistence
+  259  12:19 > dotnet new webapi -n API
+  263  12:21 > dotnet sln add Domain/
+  264  12:21 > dotnet sln add Application/
+  265  12:21 > dotnet sln add Persistence/
+  266  12:21 > dotnet sln add API/
+  267  12:21 > dotnet sln list
+  268  12:22 > cd Application/
+  269  12:22 > dotnet add reference ../Domain/
+  270  12:23 > dotnet add reference ../Persistence/
+  271  12:23 > cd ..
+  272  12:23 > cd API/
+  273  12:23 > dotnet add reference ../Application/
+  274  12:24 > cd ..
+  275  12:24 > cd Persistence/
+  276  12:24 > dotnet add reference ../Domain/
+
+//FOR DB MIGRATION 
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add InitialCreate -p Persistence/ -s API/
