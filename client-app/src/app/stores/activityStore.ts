@@ -1,13 +1,17 @@
-import { history } from './../../index';
+import { RootStore } from "./rootStore";
+import { history } from "./../../index";
 import { IActivity } from "./../models/activity";
-import { observable, action, computed, configure, runInAction } from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import { observable, action, computed, runInAction } from "mobx";
+import { SyntheticEvent } from "react";
 import agent from "../api/agent";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-configure({ enforceActions: "always" });
+export default class ActivityStore {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+  }
 
-class ActivityStore {
   @observable activityRegistry = new Map();
   @observable activity: IActivity | null = null;
   @observable loadingInitial = false;
@@ -24,13 +28,14 @@ class ActivityStore {
     const sortedActivities = activities.sort(
       (a, b) => a.date.getTime() - b.date.getTime()
     );
-
     return Object.entries(
       sortedActivities.reduce((activities, activity) => {
-        const date = activity.date.toISOString().split('T')[0];
-        activities[date] = activities[date] ? [...activities[date], activity] : [activity];
+        const date = activity.date.toISOString().split("T")[0];
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
         return activities;
-      }, {} as {[key: string]: IActivity[]})
+      }, {} as { [key: string]: IActivity[] })
     );
   }
 
@@ -100,7 +105,7 @@ class ActivityStore {
       runInAction("Creating Activity Error", () => {
         this.submitting = false;
       });
-      toast.error('Problem submitting data');
+      toast.error("Problem submitting data");
       console.log(error.response);
     }
   };
@@ -146,5 +151,3 @@ class ActivityStore {
     }
   };
 }
-
-export default createContext(new ActivityStore());
