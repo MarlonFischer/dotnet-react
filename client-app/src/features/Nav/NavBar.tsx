@@ -2,6 +2,7 @@ import React, { FC, useContext } from "react";
 import { Menu, Container, Button, Dropdown, Image } from "semantic-ui-react";
 import { NavLink, Link } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
+import { observer } from "mobx-react-lite";
 
 const NavBar: FC = () => {
   const rootStore = useContext(RootStoreContext);
@@ -34,7 +35,7 @@ const NavBar: FC = () => {
               <Dropdown.Menu>
                 <Dropdown.Item
                   as={Link}
-                  to={`/profile/username`}
+                  to={`/profile/${user.username}`}
                   text="My profile"
                   icon="user"
                 />
@@ -48,4 +49,4 @@ const NavBar: FC = () => {
   );
 };
 
-export default NavBar;
+export default observer(NavBar);
